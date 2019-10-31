@@ -4,9 +4,6 @@ module.exports = app => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;
   const UserSchema = new Schema({
-    _id: {
-      type: String,
-    },
     username: {
       type: String,
     },
@@ -16,18 +13,26 @@ module.exports = app => {
     avatar: {
       type: String,
     },
+    online: {
+      type: Number,
+    },
+    socket_id: {
+      type: String,
+    },
     created_at: {
       type: Date,
+      default: Date.now,
     },
     updated_at: {
       type: Date,
+      default: Date.now,
     },
     deleted_at: {
       type: Date,
     },
-    friends: {
-      type: Array,
-    },
+    friends: [{
+      type: Schema.Types.ObjectId, ref: 'users',
+    }],
   });
   return mongoose.model('User', UserSchema, 'users');
 };

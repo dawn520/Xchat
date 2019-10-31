@@ -1,7 +1,6 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-const bcrypt = require('bcryptjs');
 
 class AuthorizationController extends Controller {
   async login() {

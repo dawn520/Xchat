@@ -13,21 +13,22 @@ class AuthorizationService extends Service {
     });
     if (!user) {
       const message = 'The user does not exist';
-      res = ctx.response.fail(-1, message);
+      res = ctx.helper.error(-1, message);
     } else {
       if (bcrypt.compareSync(loginMsg.password, user.password)) {
         // 生成token
         const token = JWT.sign({
+          id: user._id,
           username: user.username,
         },
         this.config.jwt.secret, {
           expiresIn: 60 * 60 * 24 * 7,
         });
         user.password = undefined;
-        res = ctx.response.success({ user, token });
+        res = ctx.helper.success({ user, token });
 
       } else {
-        res = ctx.response.fail(-2, 'Your password verification failed');
+        res = ctx.helper.error(-2, 'Your password verification failed');
       }
     }
     return res;

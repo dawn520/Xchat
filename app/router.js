@@ -4,10 +4,13 @@
  * @param {Egg.Application} app - egg application
  */
 module.exports = app => {
-  const {router, controller, io, jwt} = app;
+  const { router, controller, io, jwt } = app;
   router.get('/', controller.home.index);
   router.post('/login', controller.authorization.login);
 
-  io.of('/').route('p2p', io.controller.nsp.p2p);
+  io.of('/').route('chat', io.controller.nsp.chat);
+  io.of('/').route('becomeFriends', io.controller.nsp.becomeFriends);
+  io.of('/').route('disconnect', io.controller.nsp.disconnect);
+  io.of('/').route('error', io.controller.nsp.disconnect);
 
 };
