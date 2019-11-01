@@ -1,6 +1,11 @@
 # Xchat
 
-A chat application
+A chat application 基于egg.js和socket.io的即时通讯框架
+
+## features
+1. 私聊，群聊
+2. 语音、视频通话
+3. Android/iOS/Vue.js客户端提供
 
 ## QuickStart
 
