@@ -32,29 +32,26 @@ module.exports = () => {
       handshake: true,
     }));
 
-    nsp.on('connection', socket => {
-      console.log('hello,You Are Connected!');
-      console.log(socket.decoded_token);
+    nsp.once('connection', socket => {
+      logger.info('hello,You Are Connected!');
+      logger.info(socket.decoded_token);
 
       // set user online status
       if (socket.decoded_token !== undefined) {
-        ctx.service.user.getUser({ username: socket.decoded_token.username })
+        ctx.service.user.getUser({ username: socket.decoded_token.username }, null, 'friends', [ 'avatar', 'username', 'online', '_id' ])
           .then(userData => {
-            logger.info('user data', socket.id);
-            userData.online = 1;
-            userData.socket_id = socket.id;
-            userData.save(function(err) {
-              console.log(err);
-            });
+            if (userData.socket_id.indexOf(socket.id) < 0) {
+              userData.socket_id.push(socket.id);
+              userData.online += 1;
+            }
+            userData.save();
             ctx.socket.userData = userData;
-          });
+            logger.info('user data', userData);
+            const payload = Object.assign(userData);
+            payload.password = undefined;
+            socket.emit(socket.id, ctx.helper.parseMsg('userInfo', payload, { receiver: socket.id }));
+          }).then();
       }
-
-      // push friends list to socket client
-      // const receiver = socket.id;
-      // const msg = ctx.helper.parseMsg('friendsList', {}, { receiver });
-      // socket.emit(msg);
-
     });
 
   };

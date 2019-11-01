@@ -30,4 +30,19 @@ module.exports = {
       data,
     };
   },
-};
+
+  /**
+   * 删除数组中的某一项
+   *
+   * @param array
+   * @param val
+   */
+  remove(array = [], val) {
+    const index = array.indexOf(val);
+    if (index > -1) {
+      array.splice(index, 1);
+    }
+    return array;
+  },
+}
+;

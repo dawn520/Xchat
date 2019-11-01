@@ -15,6 +15,7 @@ class AuthorizationService extends Service {
       const message = 'The user does not exist';
       res = ctx.helper.error(-1, message);
     } else {
+      console.log(loginMsg);
       if (bcrypt.compareSync(loginMsg.password, user.password)) {
         // 生成token
         const token = JWT.sign({

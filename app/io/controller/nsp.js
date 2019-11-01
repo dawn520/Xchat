@@ -1,8 +1,6 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-const mongoose = require('mongoose');
-
 
 class NspController extends Controller {
 
@@ -19,7 +17,13 @@ class NspController extends Controller {
     try {
       const { receiver, payload } = args;
       if (!receiver) {
-        socket.emit(ctx.response.fail('receiver username required!'));
+        socket.emit(ctx.helper.error('receiver username required!'));
+      }
+      if (!payload.message) {
+        socket.emit(ctx.helper.error('message required!'));
+      }
+      if (!payload.message_type) {
+        socket.emit(ctx.helper.error('message_type required!'));
       }
       // 查找用户是否在线
       const receiverUserData = await ctx.service.user.getUser({ username: receiver });
@@ -39,7 +43,8 @@ class NspController extends Controller {
       if (receiverUserData.online === 1 && receiverUserData.socket_id !== undefined) {
         // the receiver is online
         const msg = ctx.helper.parseMsg('chat', payload, { sender, receiver });
-        app.io.to(receiverUserData.socket_id).emit(receiverUserData.socket_id, msg);
+        app.io.to(receiverUserData.socket_id)
+          .emit(receiverUserData.socket_id, msg);
       }
       // save the message
       const message = {
@@ -63,11 +68,15 @@ class NspController extends Controller {
     const { ctx, logger } = this;
     const socket = ctx.socket;
     console.log('bye bye,You Are disConnected!');
-    ctx.service.user.getUser({ socket_id: socket.id })
+    await ctx.service.user.getUser({ socket_id: socket.id })
       .then(userData => {
         logger.info('user data', userData);
-        userData.online = '0';
-        userData.socket_id = '';
+        userData.socket_id = ctx.helper.remove(userData.socket_id, socket.id);
+        logger.info('user data', userData);
+        userData.online -= 1;
+        if (userData.socket_id.length <= 0) {
+          userData.online -= 0;
+        }
         userData.save(function(err) {
           console.log(err);
         });

@@ -12,6 +12,11 @@ module.exports = appInfo => {
    **/
   const config = exports = {};
 
+  config.cluster = {
+    listen: {
+      port: 12345,
+    },
+  }
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1572423063255_5581';
 

@@ -17,7 +17,7 @@ module.exports = app => {
       type: Number,
     },
     socket_id: {
-      type: String,
+      type: Array,
     },
     created_at: {
       type: Date,
@@ -31,7 +31,7 @@ module.exports = app => {
       type: Date,
     },
     friends: [{
-      type: Schema.Types.ObjectId, ref: 'users',
+      type: Schema.Types.ObjectId, ref: 'User',
     }],
   });
   return mongoose.model('User', UserSchema, 'users');
