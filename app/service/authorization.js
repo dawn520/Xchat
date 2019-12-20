@@ -16,6 +16,7 @@ class AuthorizationService extends Service {
       res = ctx.helper.error(-1, message);
     } else {
       console.log(loginMsg);
+      console.log(user);
       if (bcrypt.compareSync(loginMsg.password, user.password)) {
         // 生成token
         const token = JWT.sign({
@@ -33,6 +34,12 @@ class AuthorizationService extends Service {
       }
     }
     return res;
+  }
+
+  async test(data) {
+    console.log(data);
+    const decoded = JWT.verify(data.token, this.config.jwt.secret);
+    console.log(decoded); // bar
   }
 
 }

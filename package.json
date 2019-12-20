@@ -31,6 +31,7 @@
   },
   "scripts": {
     "s-dev": "egg-bin dev --sticky",
+    "s-start": "egg-scripts start --sticky",
     "start": "egg-scripts start --daemon --title=egg-server-Xchat",
     "stop": "egg-scripts stop --title=egg-server-Xchat",
     "dev": "egg-bin dev",

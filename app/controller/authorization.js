@@ -15,6 +15,13 @@ class AuthorizationController extends Controller {
     // 从service文件中拿到返回结果
     ctx.body = await ctx.service.authorization.login(payload);
   }
+
+  async test() {
+    const { ctx } = this;
+    const payload = ctx.request.body;
+    ctx.body = await ctx.service.authorization.test(payload);
+  }
+
 }
 
 module.exports = AuthorizationController;

@@ -9,6 +9,12 @@ class UserService extends Service {
       .populate(populate, populateSelect);
     return user;
   }
+
+  async clearOnlineUser() {
+    const { ctx } = this;
+    await ctx.model.User.updateMany({ _id: { $ne: null } }, { $set: { socket_id: [] } });
+  }
+
 }
 
 module.exports = UserService;

@@ -14,9 +14,9 @@ module.exports = appInfo => {
 
   config.cluster = {
     listen: {
-      port: 12345,
+      port: 1234,
     },
-  }
+  };
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1572423063255_5581';
 
@@ -37,7 +37,7 @@ module.exports = appInfo => {
     init: {}, // passed to engine.io
     namespace: {
       '/': {
-        connectionMiddleware: ['auth'],
+        connectionMiddleware: [ 'auth' ],
         packetMiddleware: [],
       },
       '/example': {
@@ -45,20 +45,15 @@ module.exports = appInfo => {
         packetMiddleware: [],
       },
     },
-    // redis: {
-    //   host: '127.0.0.1',
-    //   port: 6379,
-    // },
+    redis: {
+      host: '192.168.3.103',
+      port: 6379,
+      auth_pass: null,
+      db: 10,
+    },
   };
 
-  // config.io = {
-  //   redis: {
-  //     host: '127.0.0.1',
-  //     port: 6379,
-  //     auth_pass: null,
-  //     db: 10,
-  //   },
-  // };
+
   config.mongoose = {
     client: {
       url: 'mongodb://192.168.3.103/chat', options: {},
