@@ -1,9 +1,11 @@
 'use strict';
+const mongooseDateFormat = require('mongoose-date-format');
+const mongooseCreatedAtUpdatedAt = require('mongoose-createdat-updatedat');
 
 module.exports = app => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;
-  const UserSchema = new Schema({
+  const MessageSchema = new Schema({
     message: {
       type: String,
     },
@@ -16,22 +18,28 @@ module.exports = app => {
     receiver: {
       type: Schema.Types.ObjectId, ref: 'User',
     },
-    created_at: {
-      type: Date,
-      default: Date.now,
-    },
     read_at: {
       type: Date,
       default: null,
     },
-    updated_at: {
-      type: Date,
-      default: Date.now,
-    },
+    // created_at: {
+    //   type: Date,
+    //   default: Date.now,
+    // },
+    // updated_at: {
+    //   type: Date,
+    //   default: Date.now,
+    // },
     deleted_at: {
       type: Date,
       default: null,
     },
   });
-  return mongoose.model('Message', UserSchema, 'messages');
+  const options = {
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  }
+  MessageSchema.plugin(mongooseDateFormat);
+  MessageSchema.plugin(mongooseCreatedAtUpdatedAt, options);
+  return mongoose.model('Message', MessageSchema, 'messages');
 };

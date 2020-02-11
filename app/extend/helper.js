@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports  = {
+module.exports = {
   parseMsg(action, payload = {}, metadata = {}) {
     const meta = Object.assign({}, {
       timestamp: Date.now(),
@@ -14,13 +14,6 @@ module.exports  = {
       },
     };
   },
-  msgSuccess(receiver, payload = {}) {
-    const { app, socket, logger } = this.ctx;
-   // const metadata = {
-   //    sender = socket.user
-   //  }
-    return this.parseMsg(action, payload, metadata);
-  },
   success(data = undefined, message = 'success', code = 200, status = 'success') {
     return {
       code,
@@ -29,12 +22,13 @@ module.exports  = {
       data,
     };
   },
-  error(code = -1, message = 'error', status = 'failed', data = undefined) {
+  error(code = -1, message = 'error', status = 'failed', data = undefined, debug = undefined) {
     return {
       code,
       status,
       message,
       data,
+      debug,
     };
   },
 
